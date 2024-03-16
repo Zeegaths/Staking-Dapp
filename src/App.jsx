@@ -5,6 +5,8 @@ import "@radix-ui/themes/styles.css";
 import Header from "./components/Header";
 import { useState } from "react";
 import CreatePool from "./components/CreatePool";
+import useGetPools from "./hooks/useGetPools";
+import PoolDisplay from "./components/PoolDisplay"
 
 // import CreatePool from "./component/CreatePool"
 // import useCreatePool from "./hooks/UseCreatePool";
@@ -13,38 +15,38 @@ import CreatePool from "./components/CreatePool";
 configureWeb3Modal();
 
 function App() {
-    // const { loading, data: pools } = useStakingPools();
-    // const [rewardRate, setRewardRate] = useState("");
 
-    // const handleCreatePool = useCreatePool(rewardRate);
+    const renderPools = useGetPools();
 
+    const allPools = renderPools.map((item, index) => ({
+        id: index,
+        totalStakers: item[0],
+        totalStakedAmount: item[1],
+        rewardReserve: item[2],
+        rewardRate: item[3],
+    }))
+
+    console.log("allPools", allPools);
+
+    const [pool, setPool] = useState(0);
 
 
     return (
         <Container>
             <Header />
-            <main className="mt-6">
+            <main className="mt-6" >
                 <CreatePool />
-
-                <Card style={{ maxWidth: 240 }}>
-                    <Flex gap="3" align="center">
-                        <Avatar
+                <Box gap="2" style={{ width: 500 }}>
+                    {allPools.map((pool) => (
+                        <PoolDisplay
+                            key={pool.id}
+                            totalStakers={Number(pool.totalStakers)}
+                            totalStakedAmount={Number(pool.totalStakedAmount)}
+                            rewardReserve={Number(pool.rewardReserve)}
+                            rewardRate={Number(pool.rewardRate)}
                         />
-                        <Box>
-                            <Text as="div" size="2" weight="bold">
-                                USDCDAO
-                            </Text>
-                            <Text as="div" size="2" color="gray">
-                                10%
-                            </Text>
-                        </Box>
-                    </Flex>
-                </Card>
-
-
-
-
-
+                    ))}
+                </Box>        
             </main>
         </Container>
     );

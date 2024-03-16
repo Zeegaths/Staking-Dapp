@@ -1,42 +1,35 @@
-import { useCallback } from "react";
-import { isSupportedChain } from "../utils";
-// import { isAddress } from "ethers";
-import { getProvider } from "../constants/providers";
+import { useEffect, useState } from "react";
 import { getStakingContract } from "../constants/contracts";
-import {
-  useWeb3ModalAccount,
-  useWeb3ModalProvider,
-} from "@web3modal/ethers/react";
+import { readOnlyProvider } from "../constants/providers";
 
-const useCreatePool = (rewardRate) => {
-  const { chainId } = useWeb3ModalAccount();
-  const { walletProvider } = useWeb3ModalProvider();
+const useGetPools = () => {
+  const [pools, setPools] = useState([]);
 
-  return useCallback(async () => {
-    if (!isSupportedChain(chainId)) return console.error("Wrong network");
-    // if (!isAddress(address)) return console.error("Invalid address");
-    const readWriteProvider = getProvider(walletProvider);
-    const signer = await readWriteProvider.getSigner();
+  useEffect(() => {
+    const fetchPools = async () => {
+      try {
+        const contract = getStakingContract(readOnlyProvider);
+        let numberOfPools = await contract.id();
 
-    const contract = getStakingContract(signer);
+        const poolData = [];
+        for (let i = 0; i < numberOfPools; i++) {
+          poolData.push(await contract.getPoolByID(i));
+        }
 
-    try {
-      const transaction = await contract.createPool(rewardRate);
-
-      console.log("transaction: ", transaction);
-      const receipt = await transaction.wait();
-
-      console.log("receipt: ", receipt);
-
-      if (receipt.status) {
-        return console.log("Create Pool successful!");
+        setPools(
+          poolData.map(pool =>
+            Array.from({ length: pool.length }, (_, index) => pool[index])
+          )
+        );
+      } catch (error) {
+        console.error("Error fetching pools: ", error);
       }
+    };
 
-      console.log("Create Poo failed!");
-    } catch (error) {
-      console.error("error: ", error);
-    }
-  }, [chainId, rewardRate, walletProvider]);
+    fetchPools();
+  }, [setPools]); // Add setPools to dependency array
+
+  return pools;
 };
 
-export default useCreatePool;
+export default useGetPools;
