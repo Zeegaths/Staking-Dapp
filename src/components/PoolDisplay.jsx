@@ -1,6 +1,6 @@
 import { Box, Card, Flex, Text } from "@radix-ui/themes";
-import StakeComponent from "./Stake";
-import UnstakeComponent from "./unStake";
+import Stake from "./Stake";
+import UnStake from "./unStake"
 
 const PoolDisplay = ({
   totalStakers,
@@ -9,10 +9,14 @@ const PoolDisplay = ({
   rewardRate,
 }) => {
   return (
-    <Card size="10" style={{ width: 500}}>
-      <Flex gap="3" align="center">
+    <Card className="card flip-card" size="10" style={{ width: 500, margin: "auto"}}>
+      <div className="flip-card-inner ">
+      <div className="flip-card-front" style={{ margin: "auto"}}>
+      <h1>Staking Pool</h1>
+    </div>
+      <Flex gap="3" align="center" className="flip-card-back">
         <Box width={"100%"}>
-          <Flex justify={"between"} align={"center"}>
+          <Box align={"center"}>
             <div>
               <Text as="div">
                 <span className="font-medium  ">Total Stakers:</span>
@@ -32,13 +36,16 @@ const PoolDisplay = ({
                 </span>
               </Text>
             </div>
-          </Flex>
-          <StakeComponent />
-          <UnstakeComponent />
+          </Box>
+          <Stake />
+          <br />
+          <br />
+          <UnStake />
         </Box>
       </Flex>
+      </div>
+
     </Card>
   );
 };
-
 export default PoolDisplay;

@@ -1,40 +1,57 @@
+
 import { useCallback } from "react";
 import { isSupportedChain } from "../utils";
+// import { isAddress } from "ethers";
 import { getProvider } from "../constants/providers";
 import { getStakingContract } from "../constants/contracts";
 import {
-  useWeb3ModalAccount,
-  useWeb3ModalProvider,
+    useWeb3ModalAccount,
+    useWeb3ModalProvider,
 } from "@web3modal/ethers/react";
+import { toast } from 'react-toastify';
+// import { ethers } from "ethers";
 
-const useUnstake = (poolId) => {
-  const { chainId } = useWeb3ModalAccount();
-  const { walletProvider } = useWeb3ModalProvider();
 
-  return useCallback(async () => {
-    if (!isSupportedChain(chainId)) return console.error("Wrong network");
-    const readWriteProvider = getProvider(walletProvider);
-    const signer = await readWriteProvider.getSigner();
 
-    const contract = getStakingContract(signer);
+const useUnStake = () => {
+    const { chainId } = useWeb3ModalAccount();
+    const { walletProvider } = useWeb3ModalProvider();
+ 
+    const id = 0;
+    const amount = 10;
+    return useCallback(async () => {
+        if (!isSupportedChain(chainId)) {
+            toast.error("Wrong network");
+            return;
+        }
+        const readWriteProvider = getProvider(walletProvider);
+        const signer = await readWriteProvider.getSigner();
+            
+      
 
-    try {
-      const tx = await contract.unstake(poolId);
+        try {
 
-      console.log("transaction: ", tx);
-      const receipt = await tx.wait();
+            const contract = getStakingContract(signer);
+            console.log("Contract:", contract);
 
-      console.log("receipt: ", receipt);
 
-      if (receipt.status) {
-        return console.log("Unstake successful!");
-      }
+            const transaction = await contract.unstake(id);
+            console.log("Transaction: ", transaction);
 
-      console.log("Unstake failed!");
-    } catch (error) {
-      console.error("error: ", error);
-    }
-  }, [chainId, poolId, walletProvider]);
+            const receipt = await transaction.wait();
+            console.log("Receipt: ", receipt);
+
+            if (receipt.status) {
+                toast.success("Successful!");
+            } else {
+                toast.error("Failed!");
+            }
+        } catch (error) {
+            console.error("Error: ", error);
+        }
+    }, [chainId, walletProvider]);
 };
 
-export default useUnstake;
+
+
+export default useUnStake ;

@@ -2,6 +2,32 @@
 	{
 		"inputs": [
 			{
+				"internalType": "uint256",
+				"name": "_poolID",
+				"type": "uint256"
+			}
+		],
+		"name": "claimReward",
+		"outputs": [],
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "uint256",
+				"name": "_rewardRate",
+				"type": "uint256"
+			}
+		],
+		"name": "createPool",
+		"outputs": [],
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
 				"internalType": "address",
 				"name": "_stakeTokenAddress",
 				"type": "address"
@@ -145,9 +171,14 @@
 				"internalType": "uint256",
 				"name": "_poolID",
 				"type": "uint256"
+			},
+			{
+				"internalType": "uint256",
+				"name": "_amount",
+				"type": "uint256"
 			}
 		],
-		"name": "claimReward",
+		"name": "stake",
 		"outputs": [],
 		"stateMutability": "nonpayable",
 		"type": "function"
@@ -156,11 +187,11 @@
 		"inputs": [
 			{
 				"internalType": "uint256",
-				"name": "_rewardRate",
+				"name": "_poolID",
 				"type": "uint256"
 			}
 		],
-		"name": "createPool",
+		"name": "unstake",
 		"outputs": [],
 		"stateMutability": "nonpayable",
 		"type": "function"
@@ -289,37 +320,6 @@
 			}
 		],
 		"stateMutability": "view",
-		"type": "function"
-	},
-	{
-		"inputs": [
-			{
-				"internalType": "uint256",
-				"name": "_poolID",
-				"type": "uint256"
-			},
-			{
-				"internalType": "uint256",
-				"name": "_amount",
-				"type": "uint256"
-			}
-		],
-		"name": "stake",
-		"outputs": [],
-		"stateMutability": "nonpayable",
-		"type": "function"
-	},
-	{
-		"inputs": [
-			{
-				"internalType": "uint256",
-				"name": "_poolID",
-				"type": "uint256"
-			}
-		],
-		"name": "unstake",
-		"outputs": [],
-		"stateMutability": "nonpayable",
 		"type": "function"
 	}
 ]

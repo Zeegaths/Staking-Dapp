@@ -1,51 +1,57 @@
 import { Button, Dialog, Flex, Text, TextField } from "@radix-ui/themes";
-import { useState } from "react";
 import useStake from "../hooks/useStake";
+import { useState } from "react";
 
-const StakeComponent = () => {
-  const [poolId, setPoolId] = useState(0);
-  const [amount, setAmount] = useState(0);
+const Stake = ({ id }) => {
+    const [amount, setAmount] = useState('');
+    const stake = useStake(); // Initialize useStakeAmount hook
 
-  const handleStake = useStake(poolId, amount);
+    const handleStake = () => {
+        // Ensure amount is not empty and it's a valid number
+        if (amount === '' || isNaN(Number(amount))) {
+            console.error('Invalid amount');
+            return;
+        }
+        stake(id, Number(amount)); // Call the stake function with id and amount
+    };
 
-  return (
-    <Dialog.Root>
-      <Dialog.Trigger>
-        <Button className="bg-blue-600">Stake</Button>
-      </Dialog.Trigger>
-
-      <Dialog.Content style={{ maxWidth: 450 }}>
-        <Dialog.Title>Stake</Dialog.Title>
-        <Dialog.Description size="2" mb="4" gap="3">
-          Stake
-        </Dialog.Description>
-
-        <Flex direction="column" gap="3">
-          <label>          
-            <Text as="div" size="2" mb="1" weight="bold">
-              Enter Amount
-            </Text>
-            <TextField.Input
-              value={amount}
-              onChange={(e) => setAmount(e.target.value)}
-              placeholder="Enter Amount"
-            />
-          </label>
-        </Flex>
-
-        <Flex gap="3" mt="4" justify="end">
-          <Dialog.Close>
-            <Button variant="soft" color="gray">
-              Cancel
-            </Button>
-          </Dialog.Close>
-          <Button className="bg-blue-600" onClick={handleStake}>
-            Stake
-          </Button>
-        </Flex>
-      </Dialog.Content>
-    </Dialog.Root>
-  );
+    return (
+        <Dialog.Root>
+            <Dialog.Trigger>
+                <Button className="bg-blue-600">Stake Token</Button>
+            </Dialog.Trigger>
+            <Dialog.Content style={{ maxWidth: 450 }}>
+                <Dialog.Title>
+                    Stake Token
+                </Dialog.Title>
+                <Flex direction="column" gap="3">
+                    <label>
+                        <Text as="div" size="2" mb="1" weight="bold">
+                            Enter your amount staked
+                        </Text>
+                        <TextField.Input
+                            value={amount}
+                            onChange={(e) => setAmount(e.target.value)}
+                            placeholder="Enter the amount you want to stake"
+                        />
+                    </label>
+                </Flex>
+                <Flex gap="3" mt="4" justify="end">
+                    <Dialog.Close>
+                        <Button variant="soft" color="gray">
+                            Cancel
+                        </Button>
+                    </Dialog.Close>
+                    <Button
+                        className="bg-blue-600"
+                        onClick={handleStake} // Call handleStake function on button click
+                    >
+                        Stake
+                    </Button>
+                </Flex>
+            </Dialog.Content>
+        </Dialog.Root>
+    );
 };
 
-export default StakeComponent;
+export default Stake;

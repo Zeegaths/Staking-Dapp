@@ -1,43 +1,59 @@
 import { useCallback } from "react";
 import { isSupportedChain } from "../utils";
+// import { isAddress } from "ethers";
 import { getProvider } from "../constants/providers";
 import { getStakingContract } from "../constants/contracts";
 import {
   useWeb3ModalAccount,
   useWeb3ModalProvider,
 } from "@web3modal/ethers/react";
+import { toast } from 'react-toastify';
+// import { ethers } from "ethers";
 
-const useStake = (poolId, amount) => {
+
+
+const useStake = () => {
   const { chainId } = useWeb3ModalAccount();
   const { walletProvider } = useWeb3ModalProvider();
 
   return useCallback(async () => {
-    if (!isSupportedChain(chainId)) return console.error("Wrong network");
-    // if (!isAddress(address)) return console.error("Invalid address");
+    const id = 0;
+    const amount = 10;
+    if (!isSupportedChain(chainId)) {
+      toast.error("Wrong network");
+      return;
+    }
     const readWriteProvider = getProvider(walletProvider);
     const signer = await readWriteProvider.getSigner();
 
-    const contract = getStakingContract(signer);
+
 
     try {
-   
 
-      const stakeTx = await contract.stake(amount);
+      const contract = getStakingContract(signer);
+      console.log("Contract:", contract);
 
-      console.log("transaction: ", stakeTx);
-      const receipt = await stakeTransaction.wait();
+      console.log("id", id);
+      console.log("amount", amount);
 
-      console.log("receipt: ", receipt);
+      const transaction = await contract.stake(id, amount);
+      console.log("Transaction: ", transaction);
+    
 
-      if (receiptStake.status) {
-        return console.log("Stake successful!");
+      const receipt = await transaction.wait();
+      console.log("Receipt: ", receipt);
+
+      if (receipt.status) {
+        toast.success("Successful!");
+      } else {
+        toast.error("Failed!");
       }
-
-      console.log("Stake failed!");
     } catch (error) {
-      console.error("error: ", error);
+      console.error("Error: ", error);
     }
-  }, [chainId, poolId, amount, walletProvider]);
+  }, [chainId, walletProvider]);
 };
+
+
 
 export default useStake;

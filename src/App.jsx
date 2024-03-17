@@ -36,9 +36,10 @@ function App() {
             <Header />
             <main className="mt-6" >
                 <CreatePool />
-                <Box gap="2" style={{ width: 500 }}>
+                <Box className="u-class-flex">
                     {allPools.map((pool) => (
-                        <PoolDisplay
+                        <PoolDisplay 
+                        
                             key={pool.id}
                             totalStakers={Number(pool.totalStakers)}
                             totalStakedAmount={Number(pool.totalStakedAmount)}
