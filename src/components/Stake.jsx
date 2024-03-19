@@ -27,7 +27,7 @@ const Stake = ({ id }) => {
                 <Flex direction="column" gap="3">
                     <label>
                         <Text as="div" size="2" mb="1" weight="bold">
-                            Enter your amount staked
+                            Enter Stake
                         </Text>
                         <TextField.Input
                             value={amount}

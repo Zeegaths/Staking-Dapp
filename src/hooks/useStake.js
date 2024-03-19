@@ -8,17 +8,16 @@ import {
   useWeb3ModalProvider,
 } from "@web3modal/ethers/react";
 import { toast } from 'react-toastify';
-// import { ethers } from "ethers";
+import { ethers } from "ethers";
 
 
 
-const useStake = () => {
+const useStake = (amount) => {
   const { chainId } = useWeb3ModalAccount();
   const { walletProvider } = useWeb3ModalProvider();
 
-  return useCallback(async () => {
-    const id = 0;
-    const amount = 10;
+  return useCallback(async (id) => {
+    
     if (!isSupportedChain(chainId)) {
       toast.error("Wrong network");
       return;
@@ -36,6 +35,7 @@ const useStake = () => {
       console.log("id", id);
       console.log("amount", amount);
 
+      const stakeAmount = ethers.parseUnits(amount, 18);
       const transaction = await contract.stake(id, amount);
       console.log("Transaction: ", transaction);
     
@@ -51,7 +51,7 @@ const useStake = () => {
     } catch (error) {
       console.error("Error: ", error);
     }
-  }, [chainId, walletProvider]);
+  }, [chainId, amount, walletProvider]);
 };
 
 

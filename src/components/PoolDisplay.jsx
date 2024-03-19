@@ -3,6 +3,7 @@ import Stake from "./Stake";
 import UnStake from "./unStake"
 
 const PoolDisplay = ({
+  id,
   totalStakers,
   totalStakedAmount,
   rewardReserve,

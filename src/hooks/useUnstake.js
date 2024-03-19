@@ -1,4 +1,3 @@
-
 import { useCallback } from "react";
 import { isSupportedChain } from "../utils";
 // import { isAddress } from "ethers";
@@ -9,7 +8,7 @@ import {
     useWeb3ModalProvider,
 } from "@web3modal/ethers/react";
 import { toast } from 'react-toastify';
-// import { ethers } from "ethers";
+
 
 
 
@@ -17,9 +16,7 @@ const useUnStake = () => {
     const { chainId } = useWeb3ModalAccount();
     const { walletProvider } = useWeb3ModalProvider();
  
-    const id = 0;
-    const amount = 10;
-    return useCallback(async () => {
+    return useCallback(async (id) => {
         if (!isSupportedChain(chainId)) {
             toast.error("Wrong network");
             return;
